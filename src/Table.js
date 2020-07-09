@@ -16,8 +16,8 @@ const Table = (props) => {
           {props.todos.map((todo) => {
             return (
               <tr key={todo.id}>
-                <td>{todo.text}</td>
-                <td>{todo.status.toString()}</td>
+                <td>{todo.title}</td>
+                <td>{todo.completed.toString()}</td>
                 <td>
                   <button
                     className="button is-small is-danger"

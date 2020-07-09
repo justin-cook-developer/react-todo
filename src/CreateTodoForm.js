@@ -1,6 +1,13 @@
 import React, { useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 
 const CreateTodoForm = ({ addTodo }) => {
+  const history = useHistory();
+  const location = useLocation();
+
+  console.log("History", history);
+  console.log("Location", location);
+
   const [text, setText] = useState("");
   const [status, setStatus] = useState(false);
 
@@ -18,8 +25,11 @@ const CreateTodoForm = ({ addTodo }) => {
         }}
         onSubmit={(event) => {
           event.preventDefault();
+
           addTodo(text, status);
           clearForm();
+
+          history.push("/");
         }}
       >
         <div className="field">
@@ -40,7 +50,7 @@ const CreateTodoForm = ({ addTodo }) => {
         {text.includes("#") && <p className="help is-danger">No # signs!!!</p>}
 
         <div className="field">
-          <label className="label">Subject</label>
+          <label className="label">Completed</label>
           <div className="control">
             <div className="select">
               <select
@@ -61,7 +71,13 @@ const CreateTodoForm = ({ addTodo }) => {
             <button className="button is-link">Submit</button>
           </div>
           <div className="control">
-            <button className="button is-link is-light" onClick={clearForm}>
+            <button
+              className="button is-link is-light"
+              onClick={() => {
+                clearForm();
+                history.push("/");
+              }}
+            >
               Cancel
             </button>
           </div>
