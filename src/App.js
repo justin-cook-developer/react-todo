@@ -4,22 +4,28 @@ import { Route, Link } from "react-router-dom";
 import "./App.css";
 
 import { getTodos, createTodo, deleteTodo } from "./api";
+import { useQuery } from "./hooks";
 import Header from "./Header";
 import TodoTable from "./Table";
 import CreateTodoForm from "./CreateTodoForm";
+import Search from "./Search"
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const queryParams = useQuery();
+
+  const searchTerm = queryParams.search && queryParams.search.length
+    ? queryParams.search : "";
 
   useEffect(() => {
-    getTodos()
+    getTodos(searchTerm)
       .then((data) => {
         setTodos(data);
       })
       .catch((error) => {
         console.error("Failed to fetch initial todos", error.toString());
       });
-  }, []);
+  }, [searchTerm]);
 
   const addTodo = async (title, completed = false) => {
     if (!title) {
@@ -76,7 +82,15 @@ function App() {
 
       <Route
         path="/"
-        render={() => <TodoTable todos={todos} removeTodo={removeTodo} />}
+        exact={true}
+        component={Search}
+      />
+
+      <Route
+        path="/"
+        render={() => (
+            <TodoTable todos={todos} removeTodo={removeTodo} />
+        )}
       />
     </div>
   );

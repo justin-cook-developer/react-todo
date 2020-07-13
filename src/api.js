@@ -2,8 +2,16 @@ import axios from "axios";
 
 const BASE_URL = "https://jsonplaceholder.typicode.com";
 
-export const getTodos = async () => {
-  const { data } = await axios.get(`${BASE_URL}/todos`);
+// query here with `title` property
+export const getTodos = async (searchTerm = "") => {
+  let url = `${BASE_URL}/todos`;
+
+  if (searchTerm && searchTerm.length) {
+    url += `?title=${searchTerm}`;
+  }
+
+  const { data } = await axios.get(url);
+
   return data;
 };
 
